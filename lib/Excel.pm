@@ -6,18 +6,19 @@ use base qw(Object);
 use Array;
 
 sub new {
-    my $pkg = shift;
-    return bless Array->new(@_), $pkg;
+    my ( $pkg, $sheet_arr ) = @_;
+    return bless $sheet_arr, $pkg;
 }
 
 sub sheet {
-    my ($self, $sheet_num) = @_;
-    return $self->[$sheet_num];
+    my ( $self, $sheet_num ) = @_;
+    return $self->[ $sheet_num - 1 ];
 }
 
-sub sheets {
-    my ($self) = @_;
-    return $self;
+sub sheets { return Array->new(@{+shift}); }
+
+sub save {
+    my ( $self, $to_file ) = @_;
 }
 
 1;
