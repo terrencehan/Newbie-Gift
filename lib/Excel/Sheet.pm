@@ -24,8 +24,8 @@ sub col_count { return shift->{col_count}; }
 sub name {
     my ( $self, $new_val ) = @_;
     if ( defined $new_val ) {
-        return $self;
         $self->{name} = $new_val;
+        return $self;
     }
     else {
         return $self->{name};

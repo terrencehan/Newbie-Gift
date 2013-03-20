@@ -55,6 +55,13 @@ parse_excel(
     "../t/test.xls",
     sub {
         my ($excel) = @_;
+        my $i = 1;
+        $excel->sheets->each(
+            sub {
+                my ($sheet) = @_;
+                $sheet->name('new sheet name'.$i++);
+            }
+        );
         $excel->sheet(1)->get( 2, 'B' )->value('fuck');
     }
 );
