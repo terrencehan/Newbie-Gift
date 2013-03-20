@@ -24,8 +24,8 @@ sub parse_excel {
 
         my $ng_sheet = Excel::Sheet->new(
             name      => $sheet->get_name(),
-            row_count => $sheet->row_range(),
-            col_count => $sheet->col_range(),
+            row_count => $row_max + 1,
+            col_count => $col_max + 1,
         );
 
         for my $row ( $row_min .. $row_max ) {
@@ -33,9 +33,7 @@ sub parse_excel {
                 my $cell = $sheet->get_cell( $row, $col );
                 next unless $cell;
 
-                my $ng_cell = Excel::Cell->new(
-                    value=>$cell->value(),
-                );
+                my $ng_cell = Excel::Cell->new( value => $cell->value(), );
                 $ng_sheet->{cells}->[$row][$col] = $ng_cell;
             }
         }
@@ -43,4 +41,20 @@ sub parse_excel {
     }
 
     my $ng_excel = Excel->new($ng_sheet_arr);
+    if ( defined $cb ) {
+        $cb->($ng_excel);
+        $ng_excel->save($filepath);
+    }
+    else {
+        return $ng_excel;
+    }
 }
+
+#demo
+parse_excel(
+    "../t/test.xls",
+    sub {
+        my ($excel) = @_;
+        $excel->sheet(1)->get( 2, 'B' )->value('fuck');
+    }
+);
