@@ -62,6 +62,8 @@ parse_excel(
                 $sheet->name('new sheet name'.$i++);
             }
         );
-        $excel->sheet(1)->get( 2, 'B' )->value('fuck');
+        my $cell = $excel->sheet(1)->get( 2, 'B' )->value('ok')->border_left(2, 'solid', 0xff0000);
+        $cell = $excel->sheet(1)->get(3, 'C')->border_bottom(2, 'double', 0xff0000)->width(100);
     }
 );
+
