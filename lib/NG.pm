@@ -10,14 +10,19 @@ sub def_class{
     my ($class, $parent, $attrs, $methods) = @_;
 
 
-    *t = eval('*'.$class.'::ISA');
-    @t = ($parent);
+    #super class
+    if($parent ne 'undef' ){
+        *t = eval('*'.$class.'::ISA');
+        @t = ($parent);
+    }
 
+    #methods
     for(keys %$methods){
         *t = eval('*'.$class.'::'.$_);
         *t = $methods->{$_};
     }
 
+    #accessors
     for(@$attrs){
         *t = eval('*'.$class.'::'.$_);
         *t = sub :lvalue{
@@ -26,6 +31,7 @@ sub def_class{
         };
     }
 
+    #constructor
     *t = eval('*'.$class.'::new');
     my $o;
     if($parent ne 'undef' ){
