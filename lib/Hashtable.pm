@@ -1,52 +1,44 @@
-package Hashtable;
-
-use strict;
-use warnings;
-use base qw(Object);
+use NG;
 use Array;
 
-sub new {
-    my $pkg  = shift;
-    my $hash = {@_};
-    return bless $hash, $pkg;
-}
+def_class Hashtable => Object => ['data'] => {
+    build => sub {
+        my ( $self, $args ) = @_;
+        $self->data = {@$args};
+    },
+    put => sub {
+        my ( $self, $key, $val ) = @_;
+        $self->data->{$key} = $val;
+        return $self;
+    },
 
-sub put {
-    my ( $self, $key, $val ) = @_;
-    $self->{$key} = $val;
-    return $self;
-}
+    get => sub {
+        my ( $self, $key ) = @_;
+        return $self->data->{$key};
+    },
+    keys => sub {
+        my ($self) = @_;
+        return new Array( sort keys %{ $self->data } );
+    },
 
-sub get {
-    my ( $self, $key ) = @_;
-    return $self->{$key};
-}
+    values => sub {
+        my ($self) = @_;
+        return new Array( sort values %{ $self->data } );
+    },
+    remove => sub {
+        my ( $self, $key ) = @_;
+        delete $self->data->{$key};
+        return $self;
+    },
+    each => sub {
+        my ( $self, $sub ) = @_;
+        $self->keys->each(
+            sub {
+                my ($key) = @_;
+                $sub->( $key, $self->get($key) );
+            }
+        );
+        return $self;
+      }
+};
 
-sub keys {
-    my ($self) = @_;
-    return new Array( sort keys %$self );
-}
-
-sub values {
-    my ($self) = @_;
-    return new Array( sort values %$self );
-}
-
-sub remove {
-    my ( $self, $key ) = @_;
-    delete $self->{$key};
-    return $self;
-}
-
-sub each {
-    my ( $self, $sub ) = @_;
-    $self->keys->each(
-        sub {
-            my ($key) = @_;
-            $sub->( $key, $self->get($key) );
-        }
-    );
-    return $self;
-}
-
-1;

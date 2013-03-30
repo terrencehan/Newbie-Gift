@@ -1,56 +1,62 @@
-package Array;
+use NG;
+def_class Array => Object => ['data'] => {
 
-use strict;
-use warnings;
-use base qw(Object);
+    build => sub {
+        my ( $self, $args ) = @_;
+        $self->data = $args;
+    },
 
-sub new {
-    my $pkg = shift;
-    my @args = @_;
-    return bless \@args, $pkg;
-}
+    each => sub {
+        my ( $self, $sub ) = @_;
+        for my $i ( 0 .. scalar( @{ $self->data } ) - 1 ) {
+            $sub->( $self->data->[$i], $i );
+        }
+        return $self;
+    },
 
-sub each {
-    my ($self, $sub) = @_;
-    for my $i (0 .. scalar(@$self)-1) {
-        $sub->($self->[$i], $i);
-    }
-    return $self;
-}
+    get => sub {
+        my ( $self, $index ) = @_;
+        return $self->data->[$index];
+    },
 
-sub pop {
-    my ($self) = @_;
-    return pop @$self;
-}
+    set => sub {
+        my ( $self, $index, $val ) = @_;
+        $self->data->[$index] = $val;
+        return $self;
+    },
 
-sub push {
-    my ($self, $value) = @_;
-    push @$self, $value;
-    return $self;
-}
+    pop => sub {
+        my ($self) = @_;
+        return pop @{ $self->data };
+    },
 
-sub shift {
-    my ($self) = @_;
-    return shift @$self;
-}
+    push => sub {
+        my ( $self, $value ) = @_;
+        push @{ $self->data }, $value;
+        return $self;
+    },
 
-sub unshift {
-    my ($self, $value) = @_;
-    unshift @$self, $value;
-    return $self;
-}
+    shift => sub {
+        my ($self) = @_;
+        return shift @{ $self->data };
+    },
 
-sub sort {
-    my ($self, $sub) = @_;
-    my @tmp = sort {
-        $sub->($a, $b)
-    } @$self;
-    return Array->new(@tmp);
-}
+    unshift => sub {
+        my ( $self, $value ) = @_;
+        unshift @{ $self->data }, $value;
+        return $self;
+    },
 
-sub size {
-    my ($self) = @_;
-    return scalar(@$self);
-}
+    sort => sub {
+        my ( $self, $sub ) = @_;
+        my @tmp = sort { $sub->( $a, $b ) } @{ $self->data };
+        return Array->new(@tmp);
+    },
+
+    size => sub {
+        my ($self) = @_;
+        return scalar( @{ $self->data } );
+    },
+};
 
 1;

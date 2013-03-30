@@ -1,17 +1,12 @@
-package Object;
-
 use strict;
 use warnings;
 use Data::Dumper qw(Dumper);
+use NG;
 
-sub new {
-    my $pkg = shift;
-    return bless {}, $pkg;
-}
-
-sub dump {
-    my $self = shift;
-    return Dumper($self);
-}
+def_class Object => undef => [] => {
+    dump => sub {
+        return Dumper(shift);
+      }
+};
 
 1;

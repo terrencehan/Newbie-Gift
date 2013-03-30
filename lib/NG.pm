@@ -9,6 +9,7 @@ our @EXPORT = qw(def_class);
 sub def_class{
     my ($class, $parent, $attrs, $methods) = @_;
 
+    eval "use $parent";
 
     #super class
     if($parent ne 'undef' ){
@@ -18,8 +19,10 @@ sub def_class{
 
     #methods
     for(keys %$methods){
-        *t = eval('*'.$class.'::'.$_);
-        *t = $methods->{$_};
+        if(ref($methods->{$_}) eq 'CODE'){
+            *t = eval('*'.$class.'::'.$_);
+            *t = $methods->{$_};
+        }
     }
 
     #accessors
@@ -42,13 +45,18 @@ sub def_class{
         $o = bless {map {($_, undef)} @$attrs}, $class;
     }
     *t = sub {
-        my ($class, $args) = @_;
+        my ($class, @args) = @_;
+        if(scalar(@args)==1){
+            $args = $args[0];
+        }
+        else{
+            $args = \@args;
+        }
         if(defined $methods->{build}){
             $o->build($args);
         }
         $o;
     };
-
 
 }
 

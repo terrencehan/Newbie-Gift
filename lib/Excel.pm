@@ -7,6 +7,14 @@ use Array;
 use Spreadsheet::WriteExcel;
 use Excel::Cell;
 use Excel::Sheet;
+use NG;
+
+def_class => Excel => Object => ['sheet_arr'] =>{
+    build => sub{
+        my ($self, $args) = @_;
+        $self->sheet_arr = $args;
+    }
+};
 
 sub new {
     my ( $pkg, $sheet_arr ) = @_;
