@@ -36,15 +36,17 @@ sub def_class{
 
     #constructor
     *t = eval('*'.$class.'::new');
-    my $o;
-    if($parent ne 'undef' ){
-        $p_attrs = new $parent;
-        $o = bless {(map {($_, undef)} @$attrs), %$p_attrs }, $class;
-    }
-    else{
-        $o = bless {map {($_, undef)} @$attrs}, $class;
-    }
     *t = sub {
+
+        my $o;
+        if($parent ne 'undef' ){
+            $p_attrs = new $parent;
+            $o = bless {(map {($_, undef)} @$attrs), %$p_attrs }, $class;
+        }
+        else{
+            $o = bless {map {($_, undef)} @$attrs}, $class;
+        }
+
         my ($class, @args) = @_;
         if(scalar(@args)==1){
             $args = $args[0];

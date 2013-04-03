@@ -50,7 +50,8 @@ def_class Array => Object => ['data'] => {
     sort => sub {
         my ( $self, $sub ) = @_;
         my @tmp = sort { $sub->( $a, $b ) } @{ $self->data };
-        return Array->new(@tmp);
+        $self->data = \@tmp;
+        return $self;
     },
 
     size => sub {
