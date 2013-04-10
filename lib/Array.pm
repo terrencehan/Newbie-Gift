@@ -42,9 +42,15 @@ sub unshift {
 
 sub sort {
     my ($self, $sub) = @_;
-    my @tmp = sort {
-        $sub->($a, $b)
-    } @$self;
+    my @tmp;
+    if (defined $sub) {
+        @tmp = sort {
+            $sub->($a, $b)
+        } @$self;
+    }
+    else {
+        @tmp = sort @$self;
+    }
     return Array->new(@tmp);
 }
 
@@ -53,4 +59,8 @@ sub size {
     return scalar(@$self);
 }
 
+sub get {
+    my ($self, $index) = @_;
+    return $self->[$index];
+}
 1;

@@ -24,12 +24,12 @@ sub get {
 
 sub keys {
     my ($self) = @_;
-    return new Array( sort keys %$self );
+    return new Array( keys %$self );
 }
 
 sub values {
     my ($self) = @_;
-    return new Array( sort values %$self );
+    return new Array( values %$self );
 }
 
 sub remove {
