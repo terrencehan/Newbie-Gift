@@ -13,8 +13,12 @@ $hash->put( 'key3', 3 );
 
 is $hash->get('key1'), 1;
 
-cmp_deeply $hash->keys,   Array->new( 'key1', 'key2', 'key3' );
-cmp_deeply $hash->values, Array->new( 1,      2,      3 );
+cmp_deeply $hash->keys->sort(sub{
+	my ($a, $b) = @_;
+	return $a cmp $b
+}), Array->new( 'key1', 'key2', 'key3' );
+cmp_deeply $hash->values,       Array->new( 2,      1,      3 );
+cmp_deeply $hash->values->sort, Array->new( 1,      2,      3 );
 
 $hash->remove('key1');
 
