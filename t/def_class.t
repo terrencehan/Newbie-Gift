@@ -23,6 +23,8 @@ def_class Dog=>Animal=>['type']=>{
 my $dog = new Dog;
 
 $dog->run;
+$dog->type="subtype";
+$dog->run;
 
 def_class Mul=>undef=>['data']=>{
     build => sub{
@@ -33,7 +35,7 @@ def_class Mul=>undef=>['data']=>{
 
 my $mul1=new Mul("1");
 ok($mul1->data == "1","first set");
-my $mul2=new Mul("2");
+my $mul2=$mul1->new("2");
 ok($mul2->data == "2","second set");
 ok($mul1->data == "1","check first set");
 
