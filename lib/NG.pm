@@ -27,10 +27,11 @@ sub def_class{
 
     #accessors
     for(@$attrs){
-        *t = eval('*'.$class.'::'.$_);
+        my $attr=$_;
+        *t = eval('*'.$class.'::'.$attr);
         *t = sub :lvalue{
             my ($self) = shift;
-            $self->{$_};
+            $self->{$attr};
         };
     }
 
